@@ -6,6 +6,9 @@ body{
     color: #000000;
     background-color: #dae7f5;
 }
+#bodyWrapper{
+    padding: 100px;
+}
 
 header {
     position: fixed;

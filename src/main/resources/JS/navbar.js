@@ -6,7 +6,7 @@ function navbarSetup(){
         '        <nav>\n' +
         '            <ul id="navbarWrapper">\n' + /*skriv html filen således: href='\priceTable.html\'*/
         '                <li><a href=boatsFrontpage.html>SejlBåde</a></li>\n' +
-        '                <li><a href=\'#\'>titel</a></li>\n' +
+        '                <li><a href=\'Races.html\'>Kapsejlads</a></li>\n' +
         '                <li><a href=\'#\'>titel</a></li>\n' +
         '            </ul>\n' +
         '        </nav>'

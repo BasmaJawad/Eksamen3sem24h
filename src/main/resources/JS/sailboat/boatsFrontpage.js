@@ -5,6 +5,11 @@ const tableBody = document.getElementById("tableBody")
 const popup = document.querySelector("dialog")
 
 document.querySelector(".button-container button").addEventListener("click", () => {
+    const nameField = document.getElementById("name")
+    nameField.value = ""
+
+    const boatTypeField = document.getElementById("boatType")
+    boatTypeField.value = ""
     popup.showModal(); //built in function to show popup
 });
 
@@ -65,6 +70,10 @@ function putDataInTableWButton(data, index) {
         editBoat(data)
     })
 
+    deleteBtn.addEventListener("click", () => {
+        deleteBoat(data)
+    })
+
 }
 
 function editBoat(data) {
@@ -122,4 +131,34 @@ async function updateBoat(id, event) {
     }
 
     return response;
+}
+
+
+
+async function deleteBoat(Data) {
+
+    const confirmDelete = confirm("Er du sikker på du vil slette " + Data.name + "?")
+
+    if (confirmDelete) {
+
+        const url = "http://localhost:8080/deleteBoat/" + Data.id
+
+        const deleteData = {
+            method: "DELETE",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify(Data)
+        }
+
+        const response = await fetch(url, deleteData)
+
+        if (!response.ok) {
+            alert("Kunne ikke slette")
+
+        } else {
+            fetchBoats()
+        }
+
+        return response
+    }
+
 }

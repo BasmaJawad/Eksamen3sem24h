@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" href="../static/universal.css">
+    <link rel="stylesheet" href="../static/Races.css">
+
+</head>
+<body>
+
+<header>
+  <div class="wrapper">
+    <!-- navbar indholdet ligger i JS filen -->
+  </div>
+</header>
+
+
+
+<div id="bodyWrapper">
+
+
+    <div id="newRaceWrapper">
+
+        <label for="wednesday-date">Vælg Dato</label><br>
+        <input type="date" name="date" id="wednesday-date" min="2023-05-04" max="2023-09-27" required>
+
+        <label for="boatType">Båd type</label>
+        <select id="boatType" name="boatType">
+            <option value="LONGERTHAN40,SMALLERTHAN25,FROM25TO40">Vælg Alle</option>
+            <option value="LONGERTHAN40">Større end 40 fod</option>
+            <option value="SMALLERTHAN25">Mindre end 25 fod</option>
+            <option value="FROM25TO40">Mellem 25-40</option>
+        </select>
+
+        <button id="submitData" type="submit">Opret</button>
+    </div>
+
+
+    <div id="tableContainer">
+        <table id="tableWrapper">
+            <thead>
+            <tr>
+                <th>head1</th>
+                <th>head2</th>
+                <th>head3</th>
+                <th>head3</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+
+
+
+<div id="footerContainer">
+  <!-- footer indholdet ligger også i JS filen navbar+footer-->
+</div>
+
+<script src="../JS/navbar.js"></script>
+<script src="../JS/frontpage.js"></script>
+<script src="../JS/Races.js"></script>
+
+</body>
+</html>

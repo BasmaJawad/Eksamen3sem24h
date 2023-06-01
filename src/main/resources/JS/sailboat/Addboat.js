@@ -15,7 +15,6 @@ async function submitData(event){
     const form = event.currentTarget
     const url = "http://localhost:8080/postSailboat";
 
-
     try
     {
         const formData = new FormData(form)
