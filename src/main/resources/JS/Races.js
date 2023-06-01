@@ -44,7 +44,7 @@ submitBtn.addEventListener("click", submitData);
 
 }
 
-async function postRace(newRace){
+async function restPostRace(newRace){
     const url = "http://localhost:8080/postRace";
 
     const newRaceJsonString = JSON.stringify(newRace)
@@ -58,22 +58,32 @@ async function postRace(newRace){
     }
 
     const fetchresponse = await fetch(url, postToDb);
-
-    if (!fetchresponse.ok) {
-        const errorMessage = await response.text()
-        throw new Error(errorMessage)
-    } else {
-        alert("Postet til DB")
-        fetchBoats()
-    }
+    return fetchresponse;
 }
+
+function postRace(newRace){
+
+     const response = restPostRace(newRace);
+
+     if(!response.ok){
+         const errorMessage = response.text()
+         throw new Error(errorMessage)
+     }
+        else {
+            alert("Postet til DB")
+            fetchAllRaces()
+     }
+
+
+}
+
 
 
 /// se tabel
 
 const tableBody = document.getElementById("tableBody")
 
-async function fetchBoats() {
+async function fetchAllRaces() {
 
     const url = "http://localhost:8080/getAllRaces"
 
@@ -85,7 +95,7 @@ async function fetchBoats() {
 
 }
 
-fetchBoats()
+fetchAllRaces()
 
 function putDataInTableWButton(data, index) {
 
@@ -107,7 +117,6 @@ function putDataInTableWButton(data, index) {
 
         localStorage.setItem("race", JSON.stringify(data))
         window.location.href = "EditRace.html"
-
     })
 
 }

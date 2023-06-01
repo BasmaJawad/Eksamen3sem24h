@@ -183,6 +183,8 @@ function addNewResults(data) {
                 restPutResult(data, boatPosition)
             }
 
+        } else {
+
         }
 
         checkboxes.forEach((checkbox) => {
