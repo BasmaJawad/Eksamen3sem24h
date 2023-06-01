@@ -1,21 +1,22 @@
 /* Post data JS - når alle informationer bliver givet gennem en form */
 
 
-
 const input = document.getElementById('wednesday-date');
 
-input.addEventListener('change', function() {
+input.addEventListener('change', function () {
     const selectedDate = new Date(this.value);
 
 
-    if (selectedDate.getDay() !== 3) { // 3 corresponds to Wednesday (Sunday = 0, Monday = 1, Tuesday = 2, etc.)
+    if (selectedDate.getDay() !== 3) {
         alert("Du skal vælge en onsdag")
+        input.value = ""
     };
 });
 
 const submitBtn = document.getElementById("submitData");
 submitBtn.addEventListener("click", submitData);
-async function submitData() {
+
+ function submitData() {
 
     const date = document.getElementById("wednesday-date").value;
 
@@ -28,13 +29,22 @@ async function submitData() {
     }
 
     if (selectedValue === boatTypeSelect.options[0].value) {
-        //HVIS ALLE 3
+
+        for (let i = 1; i <= 3; i++) {
+            newRace.boatType = boatTypeSelect.options[i].value;
+            postRace(newRace);
+        }
+
     } else {
 
         newRace.boatType = selectedValue;
+        postRace(newRace)
 
     }
 
+}
+
+async function postRace(newRace){
     const url = "http://localhost:8080/postRace";
 
     const newRaceJsonString = JSON.stringify(newRace)
@@ -54,11 +64,51 @@ async function submitData() {
         throw new Error(errorMessage)
     } else {
         alert("Postet til DB")
-        //og hvad den skal gøre når den er postet
+        fetchBoats()
     }
-
 }
 
 
+/// se tabel
 
+const tableBody = document.getElementById("tableBody")
+
+async function fetchBoats() {
+
+    const url = "http://localhost:8080/getAllRaces"
+
+    const data = await fetchAny(url)
+
+    tableBody.innerHTML = ""
+
+    data.forEach(putDataInTableWButton)
+
+}
+
+fetchBoats()
+
+function putDataInTableWButton(data, index) {
+
+    const tr = document.createElement("tr")
+
+    tr.innerHTML =
+        "<td>" + data.date + "</td>" +
+        "<td>" + data.boatType + "</td>" +
+        "<td>" +
+        "<button class='participants' id='viewParticipant" + index + "' value='" + data + "'>Se deltagere</button>" +
+        "</td>"
+
+    tableBody.appendChild(tr)
+
+
+    const viewParticipant = document.getElementById("viewParticipant" + index);
+
+    viewParticipant.addEventListener("click", () => {
+
+        localStorage.setItem("race", JSON.stringify(data))
+        window.location.href = "EditRace.html"
+
+    })
+
+}
 

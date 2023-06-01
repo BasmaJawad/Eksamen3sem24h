@@ -1,6 +1,7 @@
 package com.example.eksamen3sem24h.controller;
 
 import ch.qos.logback.core.model.Model;
+import com.example.eksamen3sem24h.model.Enums.BoatType;
 import com.example.eksamen3sem24h.model.Sailboat;
 import com.example.eksamen3sem24h.service.SailboatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,12 @@ public class SailboatController {
     public ResponseEntity<Sailboat> deleteData(@PathVariable int id) {
         return sailboatservice.deleteData(id);
     }
+
+    @GetMapping("/getBoatsByBoatType/{boatType}")
+    public List<Sailboat> getBoatsByBoatType(@PathVariable BoatType boatType) {
+        return sailboatservice.findSailboatByBoatType(boatType);
+    }
+
 }
 
 

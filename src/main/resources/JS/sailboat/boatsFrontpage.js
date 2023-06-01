@@ -18,10 +18,6 @@ const closeBtn = document.querySelector(".close");
 closeBtn.addEventListener("click", () => {
     popup.close();
 })
-function fetchAny(url) {
-    console.log(url)
-    return fetch(url).then((response) => response.json())
-}
 
 async function fetchBoats() {
 

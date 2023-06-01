@@ -10,6 +10,10 @@ body{
     padding: 100px;
 }
 
+#bodyWrapper h1{
+    font-size: 45px;
+    margin-bottom: 70px;
+}
 header {
     position: fixed;
     top: 0;
@@ -115,11 +119,11 @@ label{
 
 input{
 
-    width: 25%;
+    width: 50%;
     padding: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
-    border-radius: 10px;
-    border: none;
+    border-radius: 5px;
+    border: 0.5px solid #909093;
 
 }

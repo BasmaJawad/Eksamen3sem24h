@@ -39,4 +39,11 @@ public class ResultController {
     public ResponseEntity<Result> deleteData(@PathVariable int id) {
         return resultservice.deleteData(id);
     }
+
+
+    @GetMapping("/getResultsByRace/{raceID}")
+    public List<Result> getResultsByRace(@PathVariable int raceID) {
+        return resultservice.findResultsByRaceID(raceID);
+    }
+
 }
