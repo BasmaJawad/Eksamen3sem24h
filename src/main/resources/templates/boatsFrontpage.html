@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/universal.css">
+    <link rel="stylesheet" href="../static/boatsFrontpage.css">
+    <link rel="stylesheet" href="../static/popupBoat.css">
+
+
+</head>
+<body>
+
+<header>
+    <div class="wrapper">
+        <!-- navbar indholdet ligger i JS filen navbar+footer-->
+    </div>
+</header>
+
+<div id="bodyWrapper">
+
+    <h1>Sejlbåde</h1>
+
+    <div class="button-container">
+        <button>
+            Tilføj Båd
+        </button>
+    </div>
+
+    <dialog>
+        <div class="popUpWrapper">
+
+            <div id="formHandler">
+
+                <form id="postBoat" >
+
+                    <label for="name">Name</label><br>
+                    <input type="text" id="name" name="name"><br>
+
+                    <label for="boatType">Båd type</label>
+                    <select id="boatType" name="boatType">
+                        <option value="LONGERTHAN40">Større end 40 fod</option>
+                        <option value="SMALLERTHAN25">Mindre end 25 fod</option>
+                        <option value="FROM25TO40">Mellem 25-40</option>
+                    </select>
+
+                    <button id="submitData" type="submit">Gem</button>
+                </form>
+
+            </div>
+
+            <div>
+                <button class="close">
+                    Close
+                </button>
+
+            </div>
+        </div>
+    </dialog>
+
+
+
+<div id="tableContainer">
+    <table id="tableWrapper">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Sejlbåd Type</th>
+            <th>Navn</th>
+            <th>Rediger</th>
+            <th>Resultater</th>
+            <th>Slet</th>
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+
+<script src="../JS/navbar.js"></script>
+<script src="../JS/sailboat/boatsFrontpage.js"></script>
+<script src="../JS/sailboat/Addboat.js"></script>
+
+</body>
+</html>
