@@ -31,7 +31,7 @@ public class ResultController {
     }
 
     @PutMapping("/updateResult/{id}")
-    public ResponseEntity<Result> updateRestaurant(@PathVariable int id, @RequestBody Result result) {
+    public ResponseEntity<Result> updateResult(@PathVariable int id, @RequestBody Result result) {
         return resultservice.updateData(id, result);
     }
 

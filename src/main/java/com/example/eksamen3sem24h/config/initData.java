@@ -42,6 +42,18 @@ public class initData implements CommandLineRunner {
         sailboat3.setName("Blå Svane");
         sailboatRepo.save(sailboat3);
 
+        sailboat.setBoatType(BoatType.LONGERTHAN40);
+        sailboat.setName("Hans peter");
+        sailboatRepo.save(sailboat);
+
+        sailboat.setBoatType(BoatType.FROM25TO40);
+        sailboat.setName("Prince of Denmark");
+        sailboatRepo.save(sailboat);
+
+        sailboat.setBoatType(BoatType.SMALLERTHAN25);
+        sailboat.setName("båd 3");
+        sailboatRepo.save(sailboat);
+
 
 
         Race race1 = new Race();

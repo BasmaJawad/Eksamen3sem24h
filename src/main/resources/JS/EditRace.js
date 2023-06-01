@@ -103,7 +103,6 @@ async function fetchBoatsInRace() {
 
 
 function putDataInTable(data, index) {
-    console.log(data)
 
     const tableBody = document.getElementById("tableBody")
 
@@ -153,8 +152,7 @@ function addNewResults(data) {
             popupInputWrapper.innerHTML = "" +
                 "<label for='boatPosition'>Angiv plads</label>" +
                 "<input type='number' id='boatPosition' name='boatPosition' min='1' max='100'>"
-        }
-        else{
+        } else {
             popupInputWrapper.innerHTML = ""
         }
 
@@ -165,8 +163,7 @@ function addNewResults(data) {
     closeBtn.addEventListener("click", () => {
         popup.close();
 
-        checkboxes.forEach((checkbox) =>
-        {
+        checkboxes.forEach((checkbox) => {
             checkbox.checked = false
             popupInputWrapper.innerHTML = ""
         })
@@ -175,42 +172,41 @@ function addNewResults(data) {
     });
 
 
-
     const submitResult = document.getElementById("submitResult")
     submitResult.addEventListener("click", () => {
 
-        if (completed.checked){
+        if (completed.checked) {
             const boatPosition = document.getElementById("boatPosition").value
             boatPosition.trim()
 
-            if (boatPosition!= "") {
-
-                restPutResul(data, boatPosition)
-
-
+            if (boatPosition != "") {
+                restPutResult(data, boatPosition)
             }
 
         }
 
-        checkboxes.forEach((checkbox) => {checkbox.checked = false;
-            popupInputWrapper.innerHTML = ""})
-
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = false;
+            popupInputWrapper.innerHTML = ""
+        })
 
     });
 }
 
-async function restPutResul(data, boatPosition) {
-
+async function restPutResult(data, boatPosition) {
 
     const url = "http://localhost:8080/updateResult/" + data.id;
     const position = boatPosition + ". plads"
 
     const result = {
+        id: data.id,
         position: position,
-        points: boatPosition,
+        points: 2,
         race: race,
         sailboat: data.sailboat
     }
+
+    console.log(result)
 
     const updatedData = {
         method: "PUT",
@@ -222,8 +218,7 @@ async function restPutResul(data, boatPosition) {
 
     if (!response.ok) {
         alert("Det gik ikke godt med update");
-    }
-    else{
+    } else {
         alert("working")
         fetchBoatsInRace()
     }
@@ -245,10 +240,9 @@ function checkCheckBoxes() {
     });
 
 
-
 }
 
-function calculatePoints(){
+function calculatePoints() {
 
 }
 
