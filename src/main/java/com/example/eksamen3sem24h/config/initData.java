@@ -42,18 +42,31 @@ public class initData implements CommandLineRunner {
         sailboat3.setName("Blå Svane");
         sailboatRepo.save(sailboat3);
 
-        sailboat.setBoatType(BoatType.LONGERTHAN40);
-        sailboat.setName("Hans peter");
-        sailboatRepo.save(sailboat);
+        Sailboat sailboat4 = new Sailboat();
+        sailboat4.setBoatType(BoatType.LONGERTHAN40);
+        sailboat4.setName("Hans peter");
+        sailboatRepo.save(sailboat4);
 
-        sailboat.setBoatType(BoatType.FROM25TO40);
-        sailboat.setName("Prince of Denmark");
-        sailboatRepo.save(sailboat);
+        Sailboat sailboat5 = new Sailboat();
+        sailboat5.setBoatType(BoatType.FROM25TO40);
+        sailboat5.setName("Prince of Denmark");
+        sailboatRepo.save(sailboat5);
 
-        sailboat.setBoatType(BoatType.SMALLERTHAN25);
-        sailboat.setName("båd 3");
-        sailboatRepo.save(sailboat);
 
+        Sailboat sailboat6 = new Sailboat();
+        sailboat6.setBoatType(BoatType.SMALLERTHAN25);
+        sailboat6.setName("båd 3");
+        sailboatRepo.save(sailboat6);
+
+        Sailboat sailboat7 = new Sailboat();
+        sailboat7.setBoatType(BoatType.LONGERTHAN40);
+        sailboat7.setName("Sailboat 7");
+        sailboatRepo.save(sailboat7);
+
+        Sailboat sailboat8 = new Sailboat();
+        sailboat8.setBoatType(BoatType.FROM25TO40);
+        sailboat8.setName("Sailboat 8");
+        sailboatRepo.save(sailboat8);
 
 
         Race race1 = new Race();
@@ -93,6 +106,24 @@ public class initData implements CommandLineRunner {
         result3.setPosition("Ikke fuldført");
         result3.setPoints(14);
         resultRepo.save(result3);
+
+        Result result4 = new Result();
+        result4.setSailboat(sailboat4);
+        result4.setRace(race1);
+        resultRepo.save(result4);
+
+        Result result5 = new Result();
+        result5.setSailboat(sailboat6);
+        result5.setRace(race2);
+        resultRepo.save(result5);
+
+        Result result6 = new Result();
+        result6.setSailboat(sailboat8);
+        result6.setRace(race3);
+
+        resultRepo.save(result6);
+
+
 
 
     }

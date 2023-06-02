@@ -4,10 +4,11 @@ body{
     font-family: Futura, sans-serif;
 
     color: #000000;
-    background-color: #dae7f5;
+    background-color: #dad3e7;
+    overflow-x: hidden ;
 }
 #bodyWrapper{
-    padding: 100px;
+    padding: 160px;
 }
 
 #bodyWrapper h1{
@@ -22,7 +23,7 @@ header {
     z-index: 2;
     width: 100%;
     padding: 1rem;
-    background-color: #a3b2c4;
+    background-color: #b6adc7;
 
 }
 

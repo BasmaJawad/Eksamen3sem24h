@@ -61,9 +61,9 @@ async function restPostRace(newRace){
     return fetchresponse;
 }
 
-function postRace(newRace){
+async function postRace(newRace){
 
-     const response = restPostRace(newRace);
+     const response = await restPostRace(newRace);
 
      if(!response.ok){
          const errorMessage = response.text()

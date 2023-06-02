@@ -3,7 +3,7 @@
 /* baggrunden af popupen*/
 dialog::backdrop {
     background: black;
-    opacity: 0.5;
+    opacity: 0.8;
 }
 
 dialog{

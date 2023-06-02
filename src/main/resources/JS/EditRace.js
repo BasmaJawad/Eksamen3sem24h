@@ -12,15 +12,11 @@ function setUp() {
 
 async function fetchSailboatsBasedOnType() {
 
-    console.log(race.boatType)
-
     const url = "http://localhost:8080/getBoatsByBoatType/" + race.boatType
 
     const data = await fetchAny(url)
 
-    //
-
-    console.log(data)
+    //filter metode her
 
     data.forEach(putDataInDropdown)
 
@@ -46,6 +42,7 @@ const addBoatToRaceButton = document.getElementById("addBoat")
 addBoatToRaceButton.addEventListener("click", addBoatToRace)
 
 function addBoatToRace() {
+
 
     const boatJsonPared = JSON.parse(boats.value);
     const boatName = boatJsonPared.name;
@@ -112,7 +109,7 @@ function putDataInTable(data, index) {
         data.position = ""
     }
 
-    tr.innerHTML = //blot eksempler på hvad der kan stå i tabellen
+    tr.innerHTML =
         "<td>" + data.id + "</td>" +
         "<td>" + data.sailboat.name + "</td>" +
         "<td>" + data.position + "</td>" +
@@ -130,10 +127,11 @@ function putDataInTable(data, index) {
 
 
 }
+const popup = document.querySelector("dialog")
 
 function addNewResults(data) {
 
-    const popup = document.querySelector("dialog")
+
     popup.showModal();
 
 
@@ -203,7 +201,7 @@ async function restPutResult(data, boatPosition) {
     const result = {
         id: data.id,
         position: position,
-        points: 2,
+        points: boatPosition,
         race: race,
         sailboat: data.sailboat
     }
@@ -222,6 +220,7 @@ async function restPutResult(data, boatPosition) {
         alert("Det gik ikke godt med update");
     } else {
         alert("working")
+        popup.close();
         fetchBoatsInRace()
     }
 

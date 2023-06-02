@@ -1,0 +1,35 @@
+
+#bodyWrapper{
+    margin-left: 30px;
+}
+#bodyWrapper h1{
+    margin-top: 50px;
+    font-size: 30px;
+    margin-bottom: 0;
+}
+
+
+#overviewWrapper{
+    margin-top: 100px;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.container{
+    width: 400px;
+    height: 200px;
+    background-color: #ffffff;
+    margin-right: 40px;
+    border-radius: 10px;
+    padding: 20px;
+    padding-top: 40px;
+    text-align: center;
+}
+
+.container span {
+    font-size: 70px;
+    font-weight: bold;
+    margin-top: 20px;
+}

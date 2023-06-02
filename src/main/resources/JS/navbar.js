@@ -13,7 +13,7 @@ function navbarSetup(){
         '            <ul id="navbarWrapper">\n' + /*skriv html filen således: href='\priceTable.html\'*/
         '                <li><a href=boatsFrontpage.html>SejlBåde</a></li>\n' +
         '                <li><a href=\'RacesFrontpage.html\'>Kapsejlads</a></li>\n' +
-        '                <li><a href=\'#\'>titel</a></li>\n' +
+        '                <li><a href=\'seasonOverview.html\'>Sæson oversigt</a></li>\n' +
         '            </ul>\n' +
         '        </nav>'
 
