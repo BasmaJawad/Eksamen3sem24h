@@ -1,0 +1,7 @@
+#bgIMGwrapper{
+    transform: scaleX(-1);
+}
+
+#bgIMGwrapper img{
+    width: 100%;
+}

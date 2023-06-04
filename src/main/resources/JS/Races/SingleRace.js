@@ -1,50 +1,66 @@
+import * as restFunctions from '../universal.js';
+import {dateFormat} from "../universal.js";
+
+document.addEventListener("DOMContentLoaded", setUp)
+
 const race = JSON.parse(localStorage.getItem("race"))
+const selectBoat = document.querySelector("#sailboats")
+const addBoatToRaceButton = document.getElementById("addBoat")
+const tableBody = document.getElementById("tableBody")
+const popup = document.querySelector("dialog")
 
-setUp()
+let participantsInRace = []
 
-function setUp() {
-    const title = document.getElementById("title")
-    title.textContent = race.date + " " + race.boatType
-    fetchBoatsInRace()
+addBoatToRaceButton.addEventListener("click", addBoatToRace)
+
+
+async function setUp() {
+    setTitle()
+    await fetchBoatsInRace()
+    await fetchSailboatsBasedOnType()
 
 }
 
+function setTitle(){
+    const title = document.getElementById("title")
+    const boattypeString = restFunctions.returnBoatTypeString(race.boatType)
+    const formatedDate = restFunctions.dateFormat(race.date)
+    title.innerHTML = formatedDate + "<br>" +  boattypeString;
+
+}
 
 async function fetchSailboatsBasedOnType() {
 
     const url = "http://localhost:8080/getBoatsByBoatType/" + race.boatType
 
-    const data = await fetchAny(url)
 
-    //filter metode her
+    const boatsWithSameBoatType = await restFunctions.fetchAny(url)
+    const boatsAlreadyInRace = participantsInRace
 
-    data.forEach(putDataInDropdown)
+    //filter der fjerner de både der allerede er i kapsejladset
+    const boatsNotInRace = boatsWithSameBoatType.filter((boat) => {
+        return !boatsAlreadyInRace.some((boatInRace) => boat.id === boatInRace.sailboat.id);
+    });
+
+    boatsNotInRace.forEach(putBoatsInDropdown)
 
 }
 
-const boats = document.querySelector("#sailboats")
-
-function putDataInDropdown(data) {
+function putBoatsInDropdown(data) {
 
 
     const option = document.createElement("option")
     option.innerHTML = data.name
     option.value = JSON.stringify(data)
 
-    boats.appendChild(option)
+    selectBoat.appendChild(option)
 
 }
-
-fetchSailboatsBasedOnType()
-
-
-const addBoatToRaceButton = document.getElementById("addBoat")
-addBoatToRaceButton.addEventListener("click", addBoatToRace)
 
 function addBoatToRace() {
 
 
-    const boatJsonPared = JSON.parse(boats.value);
+    const boatJsonPared = JSON.parse(selectBoat.value);
     const boatName = boatJsonPared.name;
 
 
@@ -54,50 +70,33 @@ function addBoatToRace() {
 
 }
 
-
 async function postResult() {
 
     const resultPreview = {
-        "sailboat": JSON.parse(boats.value),
+        "sailboat": JSON.parse(selectBoat.value),
         "race": race,
     }
 
-    const resultPreviewJsonString = JSON.stringify(resultPreview)
-
-    const postToDb = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: resultPreviewJsonString
-    }
-
     const url = "http://localhost:8080/postResult"
-    const fetchresponse = await fetch(url, postToDb);
+    const fetchresponse = await restFunctions.restPostData(url, resultPreview, true);
 
-    if (!fetchresponse.ok) {
-        const errorMessage = await response.text()
-        throw new Error(errorMessage)
-    } else {
-        alert("Postet til DB")
+
+    if (fetchresponse.ok) {
         fetchBoatsInRace()
     }
-
 }
-
 
 async function fetchBoatsInRace() {
 
     const url = "http://localhost:8080/getResultsByRace/" + race.id
 
-    const data = await fetchAny(url)
+    participantsInRace  = await restFunctions.fetchAny(url)
 
     tableBody.innerHTML = ""
 
-    data.forEach(putDataInTable)
+    participantsInRace.forEach(putDataInTable)
 
 }
-
 
 function putDataInTable(data, index) {
 
@@ -105,8 +104,11 @@ function putDataInTable(data, index) {
 
     const tr = document.createElement("tr")
 
+    let btnText = "Rediger resultat";
+
     if (data.position == null) {
         data.position = ""
+        btnText = "Tilføj resultat"
     }
 
     tr.innerHTML =
@@ -114,23 +116,23 @@ function putDataInTable(data, index) {
         "<td>" + data.sailboat.name + "</td>" +
         "<td>" + data.position + "</td>" +
         "<td>" + data.points + "</td>" +
-        "<button class='results' id='result" + index + "' value='" + data + "'> Resultat </button>"
+        "<button class='results' id='result" + index + "' value='" + data + "'>" + btnText + "</button>"
 
     tableBody.appendChild(tr)
 
     const addResult = document.getElementById("result" + index);
+    if (data.position == "") {
+        addResult.classList.add("greyBtn")
+    }
     addResult.addEventListener("click", () => {
 
         addNewResults(data)
 
     })
 
-
 }
-const popup = document.querySelector("dialog")
 
 function addNewResults(data) {
-
 
     popup.showModal();
 
@@ -153,7 +155,6 @@ function addNewResults(data) {
         } else {
             popupInputWrapper.innerHTML = ""
         }
-
 
     });
 
@@ -206,24 +207,12 @@ async function restPutResult(data, boatPosition) {
         sailboat: data.sailboat
     }
 
-    console.log(result)
+    const response = await restFunctions.restUpdateData(url, result);
 
-    const updatedData = {
-        method: "PUT",
-        headers: {"content-type": "application/json"},
-        body: JSON.stringify(result)
-    }
-
-    const response = await fetch(url, updatedData);
-
-    if (!response.ok) {
-        alert("Det gik ikke godt med update");
-    } else {
-        alert("working")
+    if (response.ok) {
         popup.close();
         fetchBoatsInRace()
     }
-
 
 }
 

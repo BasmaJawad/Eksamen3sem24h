@@ -1,38 +1,43 @@
-console.log("sejlbåde tabel")
+import * as restFunctions from '../universal.js';
+
+document.addEventListener("DOMContentLoaded", boatsTable)
+
 const tableBody = document.getElementById("tableBody")
-
-
 const popup = document.querySelector("dialog")
-
-document.querySelector(".button-container button").addEventListener("click", () => {
-    const nameField = document.getElementById("name")
-    nameField.value = ""
-
-    const boatTypeField = document.getElementById("boatType")
-    boatTypeField.value = ""
-    popup.showModal(); //built in function to show popup
-});
-
+const addBoatButton = document.querySelector(".button-container button")
 const closeBtn = document.querySelector(".close");
+
+//tilføj båd inputs
+const nameField = document.getElementById("name")
+const boatTypeField = document.getElementById("boatType")
+const submitButtonContainer = document.getElementById("submitButtonContainer");
+const submitBoatForm = document.getElementById("postBoat");
+
+addBoatButton.addEventListener("click", () => {
+    nameField.value = ""
+    boatTypeField.value = ""
+    popup.showModal();
+    addSubmitBtn()
+});
 
 closeBtn.addEventListener("click", () => {
     popup.close();
 })
 
-async function fetchBoats() {
+async function boatsTable() {
 
     const url = "http://localhost:8080/getAllBoats"
 
-    const data = await fetchAny(url)
+    const data = await restFunctions.fetchAny(url)
 
     tableBody.innerHTML = ""
 
     data.forEach(putDataInTableWButton)
 
+    tableBtns()
+
+
 }
-
-fetchBoats()
-
 
 function putDataInTableWButton(data, index) {
 
@@ -43,57 +48,101 @@ function putDataInTableWButton(data, index) {
         "<td>" + data.boatType + "</td>" +
         "<td>" + data.name + "</td>" +
         "<td>" +
-        "<button class='editBtn' id='editBtn" + index + "' value='" + data + "'>Rediger</button>" +
+        "<button class='editBtn' id='editBtn" + index + "' value='" + JSON.stringify(data) + "'>Rediger</button>" +
         "</td>" +
         "<td>" +
-        "<button class='racesBtn' id='racesBtn" + index + "' value='" + data + "'>Resultater</button>" +
+        "<button class='racesBtn' id='racesBtn" + index + "' value='" + JSON.stringify(data) + "'>Resultater</button>" +
         "</td>" +
         "<td>" +
-        "<button class='deleteBtn' id='deleteBtn" + index + "' value='" + data + "'>Slet</button>" +
+        "<button class='deleteBtn' id='deleteBtn" + index + "' value='" + JSON.stringify(data) + "'>Slet</button>" +
         "</td>"
-
-    tr.row = index
 
     tableBody.appendChild(tr)
 
 
-    const editBtn = document.getElementById("editBtn" + index);
-    const racesBtn = document.getElementById("racesBtn" + index);
-    const deleteBtn = document.getElementById("deleteBtn" + index);
+}
+
+function tableBtns(){
+
+    const editBtn = document.querySelectorAll(".editBtn");
+    const racesBtn = document.querySelectorAll(".racesBtn");
+    const deleteBtn = document.querySelectorAll(".deleteBtn");
 
 
-    editBtn.addEventListener("click", () => {
-        editBoat(data)
-    })
+        editBtn.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                editBoat(JSON.parse(btn.value))
+            });
+        });
 
-    deleteBtn.addEventListener("click", () => {
-        deleteBoat(data)
-    })
+        deleteBtn.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                deleteBoat(JSON.parse(btn.value))
+            });
+        });
+}
+
+
+
+function addSubmitBtn() {
+
+    submitButtonContainer.innerHTML = "<button id='submitData' type='submit'>Opet båd</button>"
+    submitBoatForm.addEventListener("submit", submitData)
 
 }
 
+
+//NY båd
+
+async function submitData(event){
+
+
+    event.preventDefault();
+
+    const form = event.currentTarget
+    const url = "http://localhost:8080/postSailboat";
+    const formData = new FormData(form)
+    const newObject = Object.fromEntries(formData.entries())
+
+    const response = await restFunctions.restPostData(url, newObject,true);
+
+    if (response.ok) {
+        popup.close();
+        boatsTable();
+    }
+    submitBoatForm.removeEventListener("submit", submitData);
+}
+
+//REDIGER båd
+
+function addEditBtn() {
+
+    submitButtonContainer.innerHTML = "<button id='editData' type='submit'>Gem ændringer</button>"
+
+
+}
+
+let updateBoatHandler = null;
 function editBoat(data) {
 
     popup.showModal()
+    addEditBtn()
 
-    const nameField = document.getElementById("name")
     nameField.value = data.name
 
-    const boatTypeField = document.getElementById("boatType")
     boatTypeField.value = data.boatType
-
-    const submitBoat = document.getElementById("postBoat");
-
-    submitBoat.addEventListener("submit", updateBoat);
 
     //tilføjer hidden id felt til formen
 
-    const form = document.getElementById("postBoat")
     const idField = document.createElement("input")
     idField.type = "hidden"
     idField.name = "id"
     idField.value = data.id
-    form.appendChild(idField)
+    submitBoatForm.appendChild(idField)
+
+
+    updateBoatHandler = (event) => updateBoat(data.id, event);
+    submitBoatForm.addEventListener("submit", updateBoatHandler);
 
 }
 
@@ -106,29 +155,21 @@ async function updateBoat(id, event) {
     const newObject = Object.fromEntries(formData.entries())
 
 
-    const url = "http://localhost:8080/updateData/" + newObject.id;
+    const url = "http://localhost:8080/updateBoat/" + newObject.id;
 
-    const updatedData = {
-        method: "PUT",
-        headers: {"content-type": "application/json"},
-        body: JSON.stringify(newObject)
-    }
+    const response = await restFunctions.restUpdateData(url, newObject);
 
-    //calls backend and wait for return
-    const response = await fetch(url, updatedData);
-
-    if (!response.ok) {
-        alert("Det gik ikke godt med update");
-    }
-    else {
-        alert("Data er opdateret");
+    if (response.ok) {
+        console.log(response)
         popup.close();
-        fetchBoats();
+
+       boatsTable();
+
     }
 
-    return response;
-}
+    submitBoatForm.removeEventListener("submit", updateBoatHandler);
 
+}
 
 
 async function deleteBoat(Data) {
@@ -139,22 +180,13 @@ async function deleteBoat(Data) {
 
         const url = "http://localhost:8080/deleteBoat/" + Data.id
 
-        const deleteData = {
-            method: "DELETE",
-            headers: {"content-type": "application/json"},
-            body: JSON.stringify(Data)
+        const response = await restFunctions.restDeleteData(url, Data)
+
+        if (response.ok) {
+           boatsTable()
+
         }
 
-        const response = await fetch(url, deleteData)
-
-        if (!response.ok) {
-            alert("Kunne ikke slette")
-
-        } else {
-            fetchBoats()
-        }
-
-        return response
     }
 
 }

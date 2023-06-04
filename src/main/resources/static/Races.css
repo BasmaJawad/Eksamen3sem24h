@@ -1,10 +1,12 @@
-#bodyWrapper{
+#bodyWrapper span{
+    font-size: 25px;
 
 }
 
 #bodyWrapper h1{
     font-size: 40px;
     margin-bottom: 70px;
+    margin-top: 10px;
 }
 
 select{
@@ -33,7 +35,7 @@ td{
 }
 
 thead{
-    background-color: #9391c9;
+    background-color: #323279;
     color: white;
 }
 #tableContainer{
@@ -52,7 +54,7 @@ thead{
 }
 
 tr:nth-child(even) {
-    background-color: #eae9f3;
+    background-color: #f5ebe1;
 }
 
 tr:hover {background-color: #ddd;}
@@ -84,8 +86,10 @@ label{
 }
 
 
-
-
 #containerTop{
   margin-left: 30px;
+}
+
+.greyBtn{
+    background-color: #969090;
 }
