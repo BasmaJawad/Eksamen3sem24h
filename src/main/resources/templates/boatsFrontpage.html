@@ -22,8 +22,8 @@
     <h1>Sejlbåde</h1>
 
     <div class="button-container">
-        <button>
-            Tilføj Båd
+        <button id="newBoatBtn">
+            Ny Båd +
         </button>
     </div>
 
@@ -34,8 +34,9 @@
 
                 <form id="postBoat" >
 
-                    <label for="name">Navn</label><br>
+                    <label for="name">Navn</label>
                     <input type="text" id="name" name="name"><br>
+
 
                     <label for="boatType">Båd type</label><br>
                     <select id="boatType" name="boatType">
@@ -44,7 +45,6 @@
                         <option value="FROM25TO40">Mellem 25-40</option>
                     </select>
 
-                    <br>
                     <div id="submitButtonContainer">
                     </div>
 
@@ -52,7 +52,7 @@
 
             </div>
 
-            <div>
+            <div id="closeBtnContainer">
                 <button class="close">
                     Luk
                 </button>

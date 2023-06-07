@@ -84,6 +84,22 @@ public class initData implements CommandLineRunner {
         race3.setDate("2023-05-03");
         raceRepo.save(race3);
 
+        Race race4 = new Race();
+        race4.setBoatType(BoatType.LONGERTHAN40);
+        race4.setDate("2023-06-14");
+        raceRepo.save(race4);
+
+        Race race5 = new Race();
+        race5.setBoatType(BoatType.SMALLERTHAN25);
+        race5.setDate("2023-06-14");
+        raceRepo.save(race5);
+
+        Race race6 = new Race();
+        race6.setBoatType(BoatType.FROM25TO40);
+        race6.setDate("2023-06-14");
+        raceRepo.save(race6);
+
+
 
 
         Result result1 = new Result();

@@ -1,5 +1,4 @@
 import * as restFunctions from '../universal.js';
-import {dateFormat} from "../universal.js";
 
 document.addEventListener("DOMContentLoaded", setUp)
 
@@ -8,6 +7,7 @@ const selectBoat = document.querySelector("#sailboats")
 const addBoatToRaceButton = document.getElementById("addBoat")
 const tableBody = document.getElementById("tableBody")
 const popup = document.querySelector("dialog")
+const popupCloseBtn = document.querySelector(".close");
 
 let participantsInRace = []
 
@@ -21,15 +21,17 @@ async function setUp() {
 
 }
 
-function setTitle(){
+function setTitle() {
     const title = document.getElementById("title")
     const boattypeString = restFunctions.returnBoatTypeString(race.boatType)
     const formatedDate = restFunctions.dateFormat(race.date)
-    title.innerHTML = formatedDate + "<br>" +  boattypeString;
+    title.innerHTML = formatedDate + "<br>" + boattypeString;
 
 }
 
 async function fetchSailboatsBasedOnType() {
+
+    selectBoat.innerHTML = ""
 
     const url = "http://localhost:8080/getBoatsByBoatType/" + race.boatType
 
@@ -38,11 +40,25 @@ async function fetchSailboatsBasedOnType() {
     const boatsAlreadyInRace = participantsInRace
 
     //filter der fjerner de både der allerede er i kapsejladset
-    const boatsNotInRace = boatsWithSameBoatType.filter((boat) => {
-        return !boatsAlreadyInRace.some((boatInRace) => boat.id === boatInRace.sailboat.id);
-    });
+    const boatsNotInRace = boatsWithSameBoatType.filter(boat =>
+         !boatsAlreadyInRace.some((boatInRace) => boat.id === boatInRace.sailboat.id)
+    );
 
-    boatsNotInRace.forEach(putBoatsInDropdown)
+    if (boatsNotInRace.length === 0) {
+        disableAddBoatToRaceButton()
+    } else {
+        boatsNotInRace.forEach(putBoatsInDropdown)
+    }
+
+}
+
+function disableAddBoatToRaceButton() {
+
+    const option = document.createElement("option")
+    option.innerHTML = "Ingen ledige både"
+    selectBoat.appendChild(option)
+    addBoatToRaceButton.disabled = true;
+
 
 }
 
@@ -59,10 +75,8 @@ function putBoatsInDropdown(data) {
 
 function addBoatToRace() {
 
-
     const boatJsonPared = JSON.parse(selectBoat.value);
     const boatName = boatJsonPared.name;
-
 
     if (confirm("Vil du tilføje " + boatName + " til kapsejladset?")) {
         postResult()
@@ -82,7 +96,9 @@ async function postResult() {
 
 
     if (fetchresponse.ok) {
-        fetchBoatsInRace()
+        await fetchBoatsInRace()
+        await fetchSailboatsBasedOnType()
+
     }
 }
 
@@ -90,11 +106,12 @@ async function fetchBoatsInRace() {
 
     const url = "http://localhost:8080/getResultsByRace/" + race.id
 
-    participantsInRace  = await restFunctions.fetchAny(url)
+    participantsInRace = await restFunctions.fetchAny(url)
 
     tableBody.innerHTML = ""
 
     participantsInRace.forEach(putDataInTable)
+    deleteBtns()
 
 }
 
@@ -104,7 +121,7 @@ function putDataInTable(data, index) {
 
     const tr = document.createElement("tr")
 
-    let btnText = "Rediger resultat";
+    let btnText = "Rediger";
 
     if (data.position == null) {
         data.position = ""
@@ -116,14 +133,21 @@ function putDataInTable(data, index) {
         "<td>" + data.sailboat.name + "</td>" +
         "<td>" + data.position + "</td>" +
         "<td>" + data.points + "</td>" +
-        "<button class='results' id='result" + index + "' value='" + data + "'>" + btnText + "</button>"
+        "<td>" +
+        "<button class='results' id='result" + index + "' value='" + JSON.stringify(data) + "'>" + btnText + "</button>"
+        + "</td>" +
+        "<td>" +
+        "<button class='deleteBtn' id='delete" + index + "' value='" + data.id + "'> Slet </button>"
+        + "</td>"
 
     tableBody.appendChild(tr)
 
-    const addResult = document.getElementById("result" + index);
+    const addResult = document.getElementById("result" + index)
+
     if (data.position == "") {
-        addResult.classList.add("greyBtn")
+        addResult.classList.add("colorBtn")
     }
+
     addResult.addEventListener("click", () => {
 
         addNewResults(data)
@@ -132,9 +156,36 @@ function putDataInTable(data, index) {
 
 }
 
+function deleteBtns() {
+
+
+    const deleteBtns = document.querySelectorAll(".deleteBtn")
+
+    deleteBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            deleteResult(btn.value)
+
+        })
+    })
+}
+
+async function deleteResult(id) {
+
+    const url = "http://localhost:8080/deleteResult/" + id
+
+    const response = await restFunctions.restDeleteData(url)
+
+    if (response.ok) {
+        setUp()
+    }
+}
+
 function addNewResults(data) {
 
+    const otherCheckboxesWrapper = document.getElementById("otherCheckboxesWrapper")
+
     popup.showModal();
+    addOtherCheckboxes(otherCheckboxesWrapper)
 
 
     const boatName = document.getElementById("boatName")
@@ -144,6 +195,8 @@ function addNewResults(data) {
     const completed = document.getElementById("completed");
     const popupInputWrapper = document.getElementById("popupInputWrapper")
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const submitResult = document.getElementById("submitResult")
+
 
     completed.addEventListener("change", (event) => {
 
@@ -152,47 +205,77 @@ function addNewResults(data) {
             popupInputWrapper.innerHTML = "" +
                 "<label for='boatPosition'>Angiv plads</label>" +
                 "<input type='number' id='boatPosition' name='boatPosition' min='1' max='100'>"
-        } else {
+
+            otherCheckboxesWrapper.innerHTML = ""
+        }
+        else {
             popupInputWrapper.innerHTML = ""
+            addOtherCheckboxes(otherCheckboxesWrapper)
         }
 
     });
 
-    const closeBtn = document.querySelector(".close");
-    closeBtn.addEventListener("click", () => {
-        popup.close();
 
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = false
-            popupInputWrapper.innerHTML = ""
-        })
-
-
-    });
-
-
-    const submitResult = document.getElementById("submitResult")
     submitResult.addEventListener("click", () => {
 
         if (completed.checked) {
             const boatPosition = document.getElementById("boatPosition").value
             boatPosition.trim()
 
-            if (boatPosition != "") {
+            if (boatPosition !== "") {
                 restPutResult(data, boatPosition)
-            }
-
-        } else {
-
+            } else
+                alert("Angiv venligst en placering")
         }
 
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = false;
-            popupInputWrapper.innerHTML = ""
-        })
+        else {
+            checkboxes.forEach((checkbox) => {
+
+                if (checkbox.checked) {
+
+                    const status = checkbox.getAttribute("status")
+                    restPutNotCompletedResult(data, status)
+
+                }
+            })
+        }
+        uncheckPopup(checkboxes, popupInputWrapper) //unchecker når man kikker gem
 
     });
+
+    popupCloseBtn.addEventListener("click", () => {
+        popup.close();
+        uncheckPopup(checkboxes, popupInputWrapper) //unchecker når man kikker luk
+    });
 }
+
+function addOtherCheckboxes(otherCheckboxesWrapper) {
+
+    otherCheckboxesWrapper.innerHTML = `
+    <label for="incomplete">
+        <input type="checkbox" status="Ikke fuldført" id="incomplete">ikke fuldført
+    </label><br>
+
+    <label for="tooEarly">
+        <input type="checkbox" status="Tidlig startet" id="tooEarly" >for tidligt
+    </label><br>
+
+    <label for="notStarted">
+        <input type="checkbox" status="Ikke startet" id="notStarted">ikke startet
+    </label><br>
+`;
+
+
+}
+
+function uncheckPopup(checkboxes, popupInputWrapper) {
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = false
+        popupInputWrapper.innerHTML = ""
+    })
+}
+
 
 async function restPutResult(data, boatPosition) {
 
@@ -216,23 +299,40 @@ async function restPutResult(data, boatPosition) {
 
 }
 
-function checkCheckBoxes() {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-    checkboxes.forEach(function (checkbox) {
-        checkbox.addEventListener("change", function (event) {
-            checkboxes.forEach(function (otherCheckbox) {
-                if (otherCheckbox !== event.target) {
-                    otherCheckbox.checked = false;
-                }
-            });
-        });
-    });
+async function restPutNotCompletedResult(data, status) {
+
+    const point = calculatePoints(status)
+    const position = status
+
+    const url = "http://localhost:8080/updateResult/" + data.id;
+
+    const result = {
+        id: data.id,
+        position: position,
+        points: point,
+        race: race,
+        sailboat: data.sailboat
+    }
+
+    const response = await restFunctions.restUpdateData(url, result);
+
+    if (response.ok) {
+        popup.close();
+        fetchBoatsInRace()
+    }
 
 
 }
 
-function calculatePoints() {
+function calculatePoints(status) {
 
+    let boatPosition
+
+    if (status == "Ikke startet")
+        boatPosition = participantsInRace.length + 1
+    else
+        boatPosition = participantsInRace.length
+
+    return boatPosition;
 }
-

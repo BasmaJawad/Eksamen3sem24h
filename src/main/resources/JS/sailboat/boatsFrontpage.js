@@ -13,6 +13,7 @@ const boatTypeField = document.getElementById("boatType")
 const submitButtonContainer = document.getElementById("submitButtonContainer");
 const submitBoatForm = document.getElementById("postBoat");
 
+//knap tilføj båd+
 addBoatButton.addEventListener("click", () => {
     nameField.value = ""
     boatTypeField.value = ""
@@ -20,9 +21,18 @@ addBoatButton.addEventListener("click", () => {
     addSubmitBtn()
 });
 
+
 closeBtn.addEventListener("click", () => {
     popup.close();
 })
+
+
+function addSubmitBtn() {
+
+    submitButtonContainer.innerHTML = "<button id='submitData' type='submit'>Opet båd</button>"
+    submitBoatForm.addEventListener("submit", submitData)
+
+}
 
 async function boatsTable() {
 
@@ -41,11 +51,12 @@ async function boatsTable() {
 
 function putDataInTableWButton(data, index) {
 
+    const boatTypeString = restFunctions.returnBoatTypeString(data.boatType)
     const tr = document.createElement("tr")
 
     tr.innerHTML =
         "<td>" + data.id + "</td>" +
-        "<td>" + data.boatType + "</td>" +
+        "<td>" + boatTypeString + "</td>" +
         "<td>" + data.name + "</td>" +
         "<td>" +
         "<button class='editBtn' id='editBtn" + index + "' value='" + JSON.stringify(data) + "'>Rediger</button>" +
@@ -83,15 +94,6 @@ function tableBtns(){
 }
 
 
-
-function addSubmitBtn() {
-
-    submitButtonContainer.innerHTML = "<button id='submitData' type='submit'>Opet båd</button>"
-    submitBoatForm.addEventListener("submit", submitData)
-
-}
-
-
 //NY båd
 
 async function submitData(event){
@@ -101,7 +103,7 @@ async function submitData(event){
 
     const form = event.currentTarget
     const url = "http://localhost:8080/postSailboat";
-    const formData = new FormData(form)
+    const formData = new FormData(form) //key value par af name og dens value
     const newObject = Object.fromEntries(formData.entries())
 
     const response = await restFunctions.restPostData(url, newObject,true);
@@ -118,7 +120,6 @@ async function submitData(event){
 function addEditBtn() {
 
     submitButtonContainer.innerHTML = "<button id='editData' type='submit'>Gem ændringer</button>"
-
 
 }
 
@@ -180,7 +181,7 @@ async function deleteBoat(Data) {
 
         const url = "http://localhost:8080/deleteBoat/" + Data.id
 
-        const response = await restFunctions.restDeleteData(url, Data)
+        const response = await restFunctions.restDeleteData(url)
 
         if (response.ok) {
            boatsTable()

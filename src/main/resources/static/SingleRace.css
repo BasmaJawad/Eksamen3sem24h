@@ -1,0 +1,74 @@
+#bodyWrapper span{
+    font-size: 20px;
+
+}
+
+#bodyWrapper h1{
+    font-size: 40px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+select{
+
+}
+
+
+#newRaceWrapper{
+    background-color: #ffffff;
+    padding: 10px;
+    width: 90%  ;
+    margin-top: 30px;
+
+
+}
+
+#newRaceWrapper2{
+    background-color: #44acca;
+    padding: 30px;
+    color: white;
+    border-radius: 10px;
+
+}
+
+
+#createAllRaces{
+    font-size: 20px;
+}
+
+input{
+    width: 25%;
+
+}
+label{
+    font-size: 15px;
+}
+
+
+#containerTop{
+    margin-left: 30px;
+}
+
+
+
+.results{
+    background-color: #44acca;
+}
+.colorBtn{
+    background-color: #555457;
+}
+
+.deleteBtn{
+    background-color: #f18043;
+}
+
+h2{
+font-size: 30px;
+    color:  #f18043;
+    margin-bottom: 70px;
+}
+
+#label1{
+
+    font-size: 20px;
+}

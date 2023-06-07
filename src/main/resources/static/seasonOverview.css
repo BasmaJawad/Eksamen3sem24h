@@ -1,4 +1,6 @@
-
+body{
+    background-color: #d4e2e9;
+}
 #bodyWrapper{
     margin-left: 30px;
 }
@@ -18,6 +20,7 @@
 }
 
 .container{
+    color: black;
     width: 400px;
     height: 200px;
     background-color: #ffffff;
@@ -29,6 +32,7 @@
 }
 
 .container span {
+    color: #f18043;
     font-size: 70px;
     font-weight: bold;
     margin-top: 20px;

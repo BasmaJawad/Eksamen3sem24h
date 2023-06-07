@@ -4,24 +4,27 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="../static/universal.css">
-    <link rel="stylesheet" href="../static/Races.css">
+    <link rel="stylesheet" href="../static/SingleRace.css">
     <link rel="stylesheet" href="../static/popupBoat.css">
 </head>
 <body>
 <header>
-  <div class="wrapper">
+    <div class="wrapper">
 
-    <!-- navbar indholdet ligger i JS filen -->
-  </div>
+        <!-- navbar indholdet ligger i JS filen -->
+    </div>
 </header>
 
+
 <div id="bodyWrapper">
+    <h1>Deltagerliste</h1>
+
     <span>Kapsejlads:</span>
-  <h1 id="title"> </h1>
+    <h2 id="title"></h2>
 
     <div id="newRaceWrapper2">
 
-        <label for="sailboats">Tilføj deltager</label><br>
+        <label id="label1" for="sailboats">Tilføj deltager</label><br><br>
         <select id="sailboats" name="sailboat">
 
         </select>
@@ -29,41 +32,29 @@
     </div>
 
     <dialog>
-        <div class="popUpWrapper">
+        <div class="popUpWrapper popUpWrapper2">
 
             <h3 id="boatName"></h3>
 
             <label for="completed">
-                <input type="checkbox" id="completed"  placeholder="" >fuldført
+                <input type="checkbox" id="completed" placeholder="">fuldført
             </label><br>
 
+            <div id="otherCheckboxesWrapper">
 
-            <label for="incomplete">
-                <input type="checkbox" status="incomplete" id="incomplete"  placeholder="" disabled>ikke fuldført
-            </label><br>
-
-            <label for="tooEarly">
-                <input type="checkbox" status="tooEarly" id="tooEarly"  placeholder="" disabled>for tidligt
-            </label><br>
-
-            <label for="notStarted">
-                <input type="checkbox" status="notStarted" id="notStarted"  placeholder="" disabled>ikke startet
-            </label><br>
-
-
+            </div>
 
             <div id="popupInputWrapper">
 
             </div>
 
-
             <button id="submitResult"> gem</button>
 
-                <button class="close">
-                    Luk
-                </button>
+            <button id="closeBtn" class="close">
+                Luk
+            </button>
 
-            </div>
+        </div>
 
     </dialog>
 
@@ -74,9 +65,10 @@
             <tr>
                 <th>ID</th>
                 <th>Navn</th>
-                <th>Position</th>
+                <th>Placering</th>
                 <th>Point</th>
                 <th>Tilføj resultat</th>
+                <th>Slet</th>
 
             </tr>
             </thead>
@@ -88,7 +80,7 @@
 </div>
 
 <div id="footerContainer">
-  <!-- footer indholdet ligger også i JS filen navbar+footer-->
+    <!-- footer indholdet ligger også i JS filen navbar+footer-->
 </div>
 
 <script src="../JS/navbar.js"></script>

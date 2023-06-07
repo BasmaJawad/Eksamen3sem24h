@@ -9,18 +9,88 @@ dialog::backdrop {
 dialog{
     border-radius: 10px;
     background-color: white;
-    width: 40%;
-    height: 40%;
+    width: 400px;
+    height: 400px;
+    padding: 70px;
+    padding-top: 20px;
 }
 
 .popUpWrapper{
     margin: auto;
-    padding: 50px;
-    width: 400px;
-    height: 300px;
+    display: flex;
+    flex-direction: column;
+align-items: center;
+    justify-content: center;
 
 }
 
+
+#otherCheckboxesWrapper{
+    justify-content: left;
+
+}
+
+#otherCheckboxesWrapper label{
+    margin: 0;
+
+
+}
+#otherCheckboxesWrapper input{
+    width: 100%;
+
+
+}
 .popUpWrapper button{
     margin-top: 20px;
+
+}
+
+dialog select{
+    border: 1px solid #004642;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+dialog input{
+    width: 95%;
+     border: 1px solid #004642; 
+
+}
+
+dialog button{
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+dialog form{
+    width: 100%;
+}
+
+#formHandler{
+    width: 100%;
+
+}
+
+#closeBtnContainer {
+
+    margin-top: 10px;
+
+
+}
+
+#closeBtnContainer button{
+    font-size: 15px;
+    background-color: #004642;
+}
+
+label {
+    display: flex;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    margin-right: 2px; /* Adjust this value to your desired spacing */
 }

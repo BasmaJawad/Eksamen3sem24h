@@ -1,21 +1,22 @@
 import * as restFunctions from '../universal.js';
 
+
 document.addEventListener("DOMContentLoaded", fetchAllRaces)
 
 const dateInput = document.getElementById('wednesday-date');
 const submitBtn = document.getElementById("submitData");
 const tableBody = document.getElementById("tableBody")
 
-dateInput.addEventListener('change', function () {
+dateInput.addEventListener('change',  () => {
 
-    const selectedDate = new Date(this.value);
+    const selectedDate = new Date(dateInput.value);
 
     if (selectedDate.getDay() !== 3) {
         alert("Du skal vælge en onsdag")
         dateInput.value = ""
-    }
-    ;
+    };
 });
+
 submitBtn.addEventListener("click", submitNewRace);
 
 async function fetchAllRaces() {
@@ -33,14 +34,16 @@ async function fetchAllRaces() {
     tableBtns()
 }
 
-
 function putDataInTableWButton(data, index) {
+
+    const boatTypeString = restFunctions.returnBoatTypeString(data.boatType)
+    const dateFormatted = restFunctions.dateFormat(data.date)
 
     const tr = document.createElement("tr")
 
     tr.innerHTML =
-        "<td>" + data.date + "</td>" +
-        "<td>" + data.boatType + "</td>" +
+        "<td>" + dateFormatted + "</td>" +
+        "<td>" + boatTypeString + "</td>" +
         "<td>" +
         "<button class='viewParticipant' id='viewParticipant" + index + "' value='" + JSON.stringify(data) + "'>Se deltagere</button>" +
         "</td>"
@@ -62,7 +65,9 @@ function tableBtns() {
 
 }
 
-function submitNewRace() {
+
+
+async function submitNewRace() {
 
     const date = document.getElementById("wednesday-date").value;
 
@@ -79,13 +84,15 @@ function submitNewRace() {
 
         for (let i = 1; i <= 3; i++) {
             newRace.boatType = boatTypeSelect.options[i].value;
-            postRace(newRace, false);
+            await postRace(newRace, false);
+
         }
+        alert("Oprettet")
 
     } else {
 
         newRace.boatType = selectedValue;
-        postRace(newRace, true)
+        await postRace(newRace, true)
 
     }
 

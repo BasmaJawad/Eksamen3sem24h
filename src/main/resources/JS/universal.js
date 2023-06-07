@@ -24,12 +24,11 @@ export async function restUpdateData(url, data) {
 
 }
 
-export async function restDeleteData(url, data) {
+export async function restDeleteData(url) {
 
     const deleteData = {
         method: "DELETE",
         headers: {"content-type": "application/json"},
-        body: JSON.stringify(data)
     }
 
     const response = await fetch(url, deleteData)
@@ -55,7 +54,6 @@ export async function restPostData(url, data, showAlert) {
 
     try {
 
-
         const response = await fetch(url, postData)
 
         if (!response.ok) {
@@ -72,6 +70,7 @@ export async function restPostData(url, data, showAlert) {
         return response
     } catch (error) {
         alert(error.message)
+        //if (error.code === 'ER_DUP_ENTRY')
     }
 
 }
@@ -79,11 +78,11 @@ export async function restPostData(url, data, showAlert) {
 export function returnBoatTypeString(boatype){
 
     if (boatype == "LONGERTHAN40")
-        return "Større end 40 fod"
+        return "Over 40fod"
     else if (boatype == "SMALLERTHAN25")
-        return "Mindre end 25 fod"
+        return "Under 25fod"
     else if (boatype == "FROM25TO40")
-        return "Mellem 25 og 40 fod"
+        return "Mellem 25 og 40fod"
     else
         return boatype
 

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/universal.css">
+    <link rel="stylesheet" href="../static/leaderBoard.css">
+    <script src="https://kit.fontawesome.com/d17e4552c5.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<header>
+    <div class="wrapper">
+        <!-- navbar indholdet ligger i JS filen -->
+    </div>
+</header>
+<div id="bodyWrapper">
+
+    <h1>Leaderboard</h1>
+
+    <div class="top3container">
+        <div class="box" id="top2">
+
+            <span class="postionText">2. plads</span><br><br><br>
+            <span class="textBoat">Båd:</span><br>
+            <span class="boatName"></span><br><br>
+            <span class="points"></span><br><br><br>
+            <span class="boatType"></span><br><br>
+        </div>
+        <div class="box bigger" id="top1">
+            <span class="postionText">1. plads
+            <i class="fa-solid fa-crown fa-xl" style="color: #ffae00;"></i>
+            </span><br><br><br>
+            <span class="textBoat">Båd:</span><br>
+            <span class="boatName"></span><br><br>
+            <span class="points"></span><br><br><br>
+            <span class="boatType"></span><br><br>
+        </div>
+        <div class="box " id="top3">
+            <span class="postionText">3. plads</span><br><br><br>
+            <span class="textBoat">Båd:</span><br>
+            <span class="boatName"></span><br><br>
+            <span class="points"></span><br><br><br>
+            <span class="boatType"></span><br><br>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <div id="tableContainer">
+        <table id="tableWrapper">
+            <thead>
+            <tr>
+                <th>Plads</th>
+                <th>Båd</th>
+                <th>Point</th>
+                <th>BådType</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<script src="../JS/navbar.js"></script>
+<script src="../JS/Results/leaderBoard.js" type="module"></script>
+
+
+</body>
+</html>

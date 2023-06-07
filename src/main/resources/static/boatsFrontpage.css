@@ -1,5 +1,5 @@
 #bodyWrapper{
-    padding: 120px;
+
 }
 
 #bodyWrapper h1{
@@ -9,34 +9,6 @@
 
 
 
-table {
-    margin: auto;
-    border-collapse: collapse;
-    border-spacing: 0;
-    text-align: center;
-    padding-left: 20px;
-    background-color: #f2f2f2;
-}
-
-th, td{
-    border-bottom: 1px solid #ddd;
-    padding: 15px;
-}
-
-td{
-}
-
-thead{
-    background-color: #9391c9;
-    color: white;
-}
-#tableContainer{
-    padding: 30px;
-    margin-top: 20px;
-    width: 90%;
-    border-radius: 10px;
-
-}
 
 #tableWrapper {
     font-family: Arial, Helvetica, sans-serif;
@@ -50,3 +22,20 @@ tr:nth-child(even) {
 }
 
 tr:hover {background-color: #ddd;}
+
+#newBoatBtn{
+    font-size: 20px;
+    background-color: #44acca;
+}
+
+#newBoatBtn:hover{
+    background-color: #043a39;
+}
+
+.racesBtn{
+    background-color: #f18043 ;
+}
+
+.editBtn{
+    background-color: #44acca;
+}

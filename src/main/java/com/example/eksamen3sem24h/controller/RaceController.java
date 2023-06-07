@@ -38,5 +38,9 @@ public class RaceController {
         return raceservice.deleteData(id);
     }
 
+    @GetMapping("/upcoming3races")
+    List<Race> getUpcomingRaces() {
+        return raceservice.getUpcomingRace();
+    }
 
 }

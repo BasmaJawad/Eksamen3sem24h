@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,4 +50,13 @@ public class RaceService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
+    public List<Race> getUpcomingRace() {
+
+        LocalDate currentDate = LocalDate.now();
+
+        List<Race> upcomingRaces = raceRepo.findTop3ByDateAfterOrderByDateAsc(currentDate.toString());
+
+        return upcomingRaces; // No upcoming races found
+    }
 }

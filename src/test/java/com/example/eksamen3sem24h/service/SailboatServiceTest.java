@@ -5,6 +5,8 @@ import com.example.eksamen3sem24h.repositories.SailboatRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -35,5 +37,12 @@ class SailboatServiceTest {
 
         assertNotNull(result1);
         assertNull(result2);
+    }
+
+    @Test
+    void testLocalDate(){
+        LocalDate currentDate = LocalDate.now();
+        System.out.println(currentDate);
+
     }
 }
